@@ -3,21 +3,17 @@ import random
 
 
 class ChessGame:
-    def __init__(self, color):
+    def __init__(self, color, board):
         self.color = color
+        self.board = chess.Board()
 
-    def chess_board():
-        chess_board = chess.Board()
-        return chess_board
-
-    def legal_moves(board):
-        legal = [str(move) for move in board.legal_moves]
+    def legal_moves(self):
+        legal = [str(move) for move in self.board.legal_moves]
         return legal
 
-
-def make_move(board, legal_move):
-    rand_move = str(random.choice(legal_moves))
-    return rand_move
+    def random_move(self, legal_move):
+        move = str(random.choice(legal_move))
+        return move
 
 
 if __name__ == "__main__":
