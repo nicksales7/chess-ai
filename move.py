@@ -3,7 +3,7 @@ import random
 
 
 class ChessGame:
-    def __init__(self, color, board):
+    def __init__(self, color=True):
         self.color = color
         self.board = chess.Board()
 
@@ -11,28 +11,20 @@ class ChessGame:
         legal = [str(move) for move in self.board.legal_moves]
         return legal
 
-    def random_move(self, legal_move):
-        move = str(random.choice(legal_move))
+    def random_move(self):
+        move = str(random.choice(self.legal_moves()))
         return move
+
+    def make_move(self, move):
+        made_move = self.board.push_san(move)
+        return made_move
 
 
 if __name__ == "__main__":
-    board = ChessGame.chess_board()
-    print(ChessGame.legal_moves(board))
-'''
-    game_over = False
-    while game_over == False:
-        if board.is_checkmate() == False:
-            for i in legal_moves(board):
-                print("Legal Move", i)
-            user_move = input("Move: ")
-            board.push_san(user_move)
-            print(board, "\n")
-
-            print(legal_moves(board))
-            random_move = make_move(board, legal_moves(board))
-            board.push_san(random_move)
-            print(board, "\n")
-        else:
-            game_over = True
-'''
+    # using below functions to test funcionality and see what happens, not final logic
+    game = ChessGame(True)
+    legal_moves = game.legal_moves()
+    board = game.board
+    print(board)
+    game.make_move("e4")
+    print(board)
