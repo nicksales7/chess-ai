@@ -6,17 +6,19 @@ class ChessGame:
     def __init__(self, color=True):
         self.color = color
         self.board = chess.Board()
-        self.move = chess.Move()
 
     def legal_moves(self):
         legal = [str(move) for move in self.board.legal_moves]
         return legal
 
-    def make_move(self, move):
-        if not self.legal_moves():
-            return None
-        made_move = self.move(move[:2], move[2:])
-        return made_move
+    def make_move(self, move_str):
+        try:
+            move = self.board.parse_san(move_str)
+            self.board.push(move)
+        except ValueError:
+            print("Invalid move")
+            return False
+        return True
 
     def game_over(self):
         if (
@@ -40,14 +42,19 @@ if __name__ == "__main__":
         # Game logic
         print(game.board, "\n")
         user_move = input("Move: ")
-        game.make_move(user_move)
-        print(game.board, "\n")
-
-        bot_move = game.random_move()
-        game.make_move(bot_move)
-        print(game.board, "\n")
+        if not game.make_move(user_move):
+            continue
 
         if game.game_over():
             game_over = True
-            print(game.board, "\n")
-        ### Main game logic to be done below
+            break
+
+        ai_move = ai.random_move()
+        if not game.make_move(ai_move):
+            continue
+
+        if game.game_over():
+            game_over = True
+            break
+
+        print(game.board, "\n")
