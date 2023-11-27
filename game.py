@@ -1,22 +1,21 @@
+from ai import ChessAI
 import chess
-import random
 
 
 class ChessGame:
     def __init__(self, color=True):
         self.color = color
         self.board = chess.Board()
+        self.move = chess.Move()
 
     def legal_moves(self):
         legal = [str(move) for move in self.board.legal_moves]
         return legal
 
-    def random_move(self):
-        move = str(random.choice(self.legal_moves()))
-        return move
-
     def make_move(self, move):
-        made_move = self.board.push_san(move)
+        if not self.legal_moves():
+            return None
+        made_move = self.move(move[:2], move[2:])
         return made_move
 
     def game_over(self):
@@ -34,12 +33,21 @@ class ChessGame:
 
 if __name__ == "__main__":
     game = ChessGame(True)
+    ai = ChessAI(game)
     game_over = False
 
     while not game_over:
         # Game logic
+        print(game.board, "\n")
+        user_move = input("Move: ")
+        game.make_move(user_move)
+        print(game.board, "\n")
+
+        bot_move = game.random_move()
+        game.make_move(bot_move)
+        print(game.board, "\n")
 
         if game.game_over():
             game_over = True
-            print(game.board)
+            print(game.board, "\n")
         ### Main game logic to be done below
