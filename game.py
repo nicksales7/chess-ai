@@ -8,8 +8,7 @@ class ChessGame:
         self.board = chess.Board()
 
     def legal_moves(self):
-        legal = [str(move) for move in self.board.legal_moves]
-        return legal
+        return [str(move) for move in self.board.legal_moves]
 
     def make_move(self, move_str):
         try:
@@ -21,16 +20,20 @@ class ChessGame:
         return True
 
     def game_over(self):
-        if (
-            self.board.is_checkmate()
-            or self.board.is_stalemate()
-            or self.board.has_insufficient_material(self.color)
-            or self.board.is_seventyfive_moves()
-            or self.board.is_fivefold_repetition()
-        ):
-            return True
-        else:
-            return False
+        conditions = {
+            self.board.is_checkmate: "Checkmate!",
+            self.board.is_stalemate: "Draw by Stalemate",
+            lambda: self.board.has_insufficient_material(
+                self.color
+            ): "Draw by insufficient material",
+            self.board.is_seventyfive_moves: "Draw by seventyfive move rule",
+            self.board.is_fivefold_repetition: "Draw by fivefold repetition",
+        }
+        for condition, message in conditions.items():
+            if condition():
+                print(message)
+                return True
+        return False
 
 
 if __name__ == "__main__":
@@ -58,3 +61,5 @@ if __name__ == "__main__":
             break
 
         print(game.board, "\n")
+
+    print(game.board, "\n")
